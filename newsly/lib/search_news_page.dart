@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:newsly/news.dart';
+import 'package:newsly/news_details_screen.dart';
 import 'package:newsly/utils.dart';
 
 class SearchNewsPage extends StatefulWidget {
@@ -29,27 +30,55 @@ class _SearchNewsPageState extends State<SearchNewsPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TextField(
-          controller: _controller,
-          decoration: const InputDecoration(
-              prefixIcon: Icon(Icons.search), border: OutlineInputBorder()),
+        Padding(
+          padding: const EdgeInsets.only(left: 4.0, right: 4.0),
+          child: TextField(
+            controller: _controller,
+            decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.search), border: OutlineInputBorder()),
+          ),
         ),
         Expanded(
           child: ListView.builder(
             itemCount: _news.length,
             itemBuilder: (context, index) {
-              return Card(
-                child: Column(
-                  children: [
-                    Image.network(
-                      _news[index].urlToImage,
-                      height: 150,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                    Text(_news[index].title),
-                    Text(_news[index].author),
-                  ],
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder:(context) => NewsDetailsScreen(news: _news[index])));
+                },
+                child: Card(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Hero(
+                        tag:_news[index].title,
+                        child: Image.network(
+                          _news[index].urlToImage,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const SizedBox(
+                              height: 150,
+                              child: Center(child: Text("No image found.")),
+                            );
+                          },
+                          height: 150,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Text(
+                        _news[index].title,
+                        maxLines: 1,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Text(_news[index].author),
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
