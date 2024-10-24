@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rick_and_morty/features/character/presentation/pages/character_list_page.dart';
+import 'package:rick_and_morty/features/characters/presentation/pages/character_list_page.dart';
 
 void main() {
   runApp(const MainApp());
@@ -13,7 +13,8 @@ class MainApp extends StatelessWidget {
     return const MaterialApp(
       home: Scaffold(
         body: CharacterListPage(),
-      ),
+        ),
+  
     );
   }
 }
