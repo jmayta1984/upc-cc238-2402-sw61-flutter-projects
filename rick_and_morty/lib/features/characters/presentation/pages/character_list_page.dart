@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:rick_and_morty/core/constants/app_constants.dart';
 import 'package:rick_and_morty/features/characters/data/remote/character_model.dart';
 import 'package:rick_and_morty/features/characters/data/remote/character_service.dart';
+import 'package:rick_and_morty/features/characters/presentation/widget/character_list_item.dart';
 
 class CharacterListPage extends StatefulWidget {
   const CharacterListPage({super.key});
@@ -10,57 +13,54 @@ class CharacterListPage extends StatefulWidget {
 }
 
 class _CharacterListPageState extends State<CharacterListPage> {
-  List<CharacterModel> _characters = [];
+  final PagingController<int, CharacterModel> _pagingController =
+      PagingController(firstPageKey: 1);
 
-  Future<void> loadData() async {
-    List<CharacterModel> characters = await CharacterService().getCharacters();
-    setState(() {
-      _characters = characters;
-    });
+  Future<void> _fetchPage(int page) async {
+    try {
+      List<CharacterModel> newCharacters =
+          await CharacterService().getCharacters(page);
+      final bool isLastPage = newCharacters.length < AppConstants.pageSize;
+      if (isLastPage) {
+        _pagingController.appendLastPage(newCharacters);
+      } else {
+        _pagingController.appendPage(newCharacters, page + 1);
+      }
+    } catch (e) {
+      _pagingController.error = e;
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    loadData();
+
+    _pagingController.addPageRequestListener(
+      (page) {
+        _fetchPage(page);
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-      itemCount: _characters.length,
-      itemBuilder: (context, index) {
-        return Card(
-            child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(child: Text(_characters[index].name , maxLines: 1,)),
-                IconButton(
-                    onPressed: () {}, icon: const Icon(Icons.favorite_outline))
-              ],
-            ),
-            Row(
-              children: [
-                ClipOval(
-                    child: Image.network(
-                  _characters[index].image,
-                  width: 96,
-                  height: 96,
-                )),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                  Text(_characters[index].species),
-                  Text(_characters[index].gender),
-                ],)
-              ],
-            )
-          ],
-        ));
-      },
+    return PagedGridView<int, CharacterModel>(
+      gridDelegate:
+          const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+      pagingController: _pagingController,
+      builderDelegate: PagedChildBuilderDelegate(
+        itemBuilder: (context, item, index) {
+          return CharacterListItem(
+            character: item,
+          );
+        },
+      ),
     );
   }
 }

@@ -4,4 +4,6 @@ class AppConstants {
   static const String characterEndpoint = '/character';
   
   static const String episodeEndpoint = '/episode';
+
+  static const int pageSize = 20;
 }
