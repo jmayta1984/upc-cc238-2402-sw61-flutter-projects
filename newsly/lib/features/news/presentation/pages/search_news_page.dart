@@ -4,7 +4,6 @@ import 'package:newsly/features/news/presentation/blocs/news_bloc.dart';
 import 'package:newsly/features/news/presentation/blocs/news_event.dart';
 import 'package:newsly/features/news/presentation/blocs/news_state.dart';
 import 'package:newsly/features/news/presentation/pages/news_details_page.dart';
-import 'package:newsly/main.dart';
 
 class SearchNewsPage extends StatefulWidget {
   const SearchNewsPage({super.key});
