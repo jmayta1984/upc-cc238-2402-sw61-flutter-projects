@@ -31,15 +31,18 @@ class _CharacterListItemState extends State<CharacterListItem> {
   Widget build(BuildContext context) {
     return Card(
         child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-                child: Text(
-              widget.character.name,
-              maxLines: 1,
-            )),
+              child: Text(
+                widget.character.name,
+                maxLines: 1,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
             IconButton(
               onPressed: () {
                 setState(() {
@@ -57,9 +60,9 @@ class _CharacterListItemState extends State<CharacterListItem> {
                   FavoriteDao().deleteFavorite(widget.character.id);
                 }
               },
-              icon:  Icon(
+              icon: Icon(
                 Icons.favorite_outline,
-                color: _isFavorite?Colors.red: Colors.grey,
+                color: _isFavorite ? Colors.red : Colors.grey,
               ),
             )
           ],
@@ -67,23 +70,29 @@ class _CharacterListItemState extends State<CharacterListItem> {
         Row(
           children: [
             ClipOval(
-                child: Image.network(
-              widget.character.image,
-              width: 96,
-              height: 96,
-            )),
+                child: Hero(
+                  tag: widget.character.id,
+                  child: Image.network(
+                                widget.character.image,
+                                width: 96,
+                                height: 96,
+                              ),
+                )),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.character.species,
-                    maxLines: 1,
-                    softWrap: false,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(widget.character.gender),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.character.species,
+                      maxLines: 1,
+                      softWrap: false,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(widget.character.gender),
+                  ],
+                ),
               ),
             )
           ],

@@ -3,6 +3,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:rick_and_morty/core/constants/app_constants.dart';
 import 'package:rick_and_morty/features/characters/data/remote/character_model.dart';
 import 'package:rick_and_morty/features/characters/data/remote/character_service.dart';
+import 'package:rick_and_morty/features/characters/presentation/pages/character_detail_page.dart';
 import 'package:rick_and_morty/features/characters/presentation/widget/character_list_item.dart';
 
 class CharacterListPage extends StatefulWidget {
@@ -56,8 +57,17 @@ class _CharacterListPageState extends State<CharacterListPage> {
       pagingController: _pagingController,
       builderDelegate: PagedChildBuilderDelegate(
         itemBuilder: (context, item, index) {
-          return CharacterListItem(
-            character: item,
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CharacterDetailPage(character: item),
+                  ));
+            },
+            child: CharacterListItem(
+              character: item,
+            ),
           );
         },
       ),
