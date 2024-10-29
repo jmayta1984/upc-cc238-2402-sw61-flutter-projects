@@ -1,3 +1,5 @@
+import 'package:rick_and_morty/features/characters/domain/character.dart';
+
 class CharacterModel {
   final int id;
   final String name;
@@ -22,5 +24,15 @@ class CharacterModel {
         gender: json['gender'] ?? '',
         species: json['species'] ?? '',
         image: json['image'] ?? '');
+  }
+
+  Character toCharacter() {
+    return Character(
+        id: id,
+        name: name,
+        status: status,
+        species: species,
+        image: image,
+        gender: gender);
   }
 }

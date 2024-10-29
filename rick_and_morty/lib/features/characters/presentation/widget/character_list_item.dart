@@ -1,23 +1,23 @@
+
 import 'package:flutter/material.dart';
-import 'package:rick_and_morty/features/characters/data/remote/character_model.dart';
+import 'package:rick_and_morty/features/characters/domain/character.dart';
 import 'package:rick_and_morty/shared/data/local/favorite_dao.dart';
 import 'package:rick_and_morty/shared/data/local/favorite_model.dart';
 
 class CharacterListItem extends StatefulWidget {
   const CharacterListItem({super.key, required this.character});
-  final CharacterModel character;
+  final Character character;
 
   @override
   State<CharacterListItem> createState() => _CharacterListItemState();
 }
 
 class _CharacterListItemState extends State<CharacterListItem> {
-  bool _isFavorite = false;
 
   void _validate() async {
     bool favorite = await FavoriteDao().isFavorite(widget.character.id);
     setState(() {
-      _isFavorite = favorite;
+      widget.character.isFavorite = favorite;
     });
   }
 
@@ -46,10 +46,10 @@ class _CharacterListItemState extends State<CharacterListItem> {
             IconButton(
               onPressed: () {
                 setState(() {
-                  _isFavorite = !_isFavorite;
+                  widget.character.isFavorite = !widget.character.isFavorite;
                 });
 
-                if (_isFavorite) {
+                if (widget.character.isFavorite) {
                   FavoriteDao().insertFavorite(FavoriteModel(
                       id: widget.character.id,
                       name: widget.character.name,
@@ -62,7 +62,7 @@ class _CharacterListItemState extends State<CharacterListItem> {
               },
               icon: Icon(
                 Icons.favorite_outline,
-                color: _isFavorite ? Colors.red : Colors.grey,
+                color: widget.character.isFavorite ? Colors.red : Colors.grey,
               ),
             )
           ],

@@ -1,30 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:rick_and_morty/features/characters/data/remote/character_model.dart';
-import 'package:rick_and_morty/shared/data/local/favorite_dao.dart';
-import 'package:rick_and_morty/shared/data/local/favorite_model.dart';
+import 'package:rick_and_morty/features/characters/domain/character.dart';
 
 class CharacterDetailPage extends StatefulWidget {
-  const CharacterDetailPage({super.key, required this.character});
+  const CharacterDetailPage(
+      {super.key,
+      required this.character,
+      required this.onDelete,
+      required this.onInsert});
 
-  final CharacterModel character;
+  final Character character;
+  final Function() onDelete;
+  final Function() onInsert;
 
   @override
   State<CharacterDetailPage> createState() => _CharacterDetailPageState();
 }
 
 class _CharacterDetailPageState extends State<CharacterDetailPage> {
-  bool _isFavorite = false;
-
-  Future<void> _loadData() async {
-    bool isFavorite = await FavoriteDao().isFavorite(widget.character.id);
-    setState(() {
-      _isFavorite = isFavorite;
-    });
-  }
-
   @override
   void initState() {
-    _loadData();
     super.initState();
   }
 
@@ -66,21 +60,19 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
               IconButton.outlined(
                   onPressed: () {
                     setState(() {
-                      _isFavorite = !_isFavorite;
+                      widget.character.isFavorite =
+                          !widget.character.isFavorite;
                     });
-                    if (_isFavorite) {
-                      FavoriteDao().insertFavorite(FavoriteModel(
-                          id: widget.character.id,
-                          name: widget.character.name,
-                          image: widget.character.image,
-                          species: widget.character.species,
-                          status: widget.character.status));
+                    if (widget.character.isFavorite) {
+                      widget.onInsert();
                     } else {
-                      FavoriteDao().deleteFavorite(widget.character.id);
+                      widget.onDelete();
                     }
                   },
                   icon: Icon(Icons.favorite_outline,
-                      color: _isFavorite ? Colors.red : Colors.grey))
+                      color: widget.character.isFavorite
+                          ? Colors.red
+                          : Colors.grey))
             ],
           )),
     );

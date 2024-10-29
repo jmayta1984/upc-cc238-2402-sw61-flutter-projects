@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rick_and_morty/features/favorites/presentation/widgets/favorite_list_item.dart';
 import 'package:rick_and_morty/shared/data/local/favorite_dao.dart';
 import 'package:rick_and_morty/shared/data/local/favorite_model.dart';
 
@@ -29,7 +30,13 @@ class _FavoriteListPageState extends State<FavoriteListPage> {
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: _favorites.length,
-      itemBuilder: (context, index) => Text(_favorites[index].name),
+      itemBuilder: (context, index) => FavoriteListItem(
+        favorite: _favorites[index],
+        onDelete: () {
+          FavoriteDao().deleteFavorite(_favorites[index].id);
+          _loadData();
+        },
+      ),
     );
   }
 }
