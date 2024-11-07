@@ -10,7 +10,6 @@ class MovieService {
   Future<List<MovieDto>> getMovies(MovieEndpoint endpoint, int page) async {
     String url =
         '${AppConstants.baseUrl}${AppConstants.movieEndpoint}${endpoint.endpoint}${AppConstants.apiKeyQuery}${AppConstants.pageQuery}$page';
-    print(url);
     try {
       http.Response response = await http.get(Uri.parse(url));
 

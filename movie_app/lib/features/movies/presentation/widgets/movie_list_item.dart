@@ -39,7 +39,7 @@ class MovieListItem extends StatelessWidget {
                           child: Text(
                             movie.voteAverage.toStringAsFixed(1),
                             style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 12),
+                                fontWeight: FontWeight.bold, fontSize: 12, color: Colors.black),
                           ),
                         )),
                       ],

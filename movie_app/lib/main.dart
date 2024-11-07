@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/shared/presentation/home_page.dart';
+import 'package:movie_app/features/auth/presentation/widgets/login_page.dart';
 
 void main() {
   runApp(const MainApp());
@@ -10,8 +10,11 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: HomePage()
+    return MaterialApp(
+      home: LoginPage(),
+      debugShowCheckedModeBanner: false,
+      darkTheme: ThemeData.dark(),
+      theme: ThemeData.light(),
     );
   }
 }
