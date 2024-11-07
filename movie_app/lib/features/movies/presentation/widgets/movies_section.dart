@@ -8,28 +8,29 @@ class MoviesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            endpoint.section,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+    return Card (
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top:8.0, left: 8.0, right: 8.0),
+            child: Text(
+              endpoint.section,
+              style: const TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-        ),
-        SizedBox(
-
-          height: height / 3,
-          child: MovieList(
-            endpoint: endpoint,
-          ),
-        )
-      ],
+          SizedBox(
+      
+            height: 250,
+            child: MovieList(
+              endpoint: endpoint,
+            ),
+          )
+        ],
+      ),
     );
   }
 }

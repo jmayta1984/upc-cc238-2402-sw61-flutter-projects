@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:movie_app/core/app_constants.dart';
 import 'package:movie_app/core/movie_endpoint.dart';
 import 'package:movie_app/features/movies/data/remote/movie_service.dart';
 import 'package:movie_app/features/movies/data/repository/movie_repository.dart';
 import 'package:movie_app/features/movies/domain/movie.dart';
+import 'package:movie_app/features/movies/presentation/pages/movie_detail_page.dart';
 import 'package:movie_app/features/movies/presentation/widgets/movie_list_item.dart';
 
 class MovieList extends StatefulWidget {
@@ -13,29 +16,45 @@ class MovieList extends StatefulWidget {
 }
 
 class _MovieListState extends State<MovieList> {
-  List<Movie> _movies = [];
+  final PagingController<int, Movie> _pagingController =
+      PagingController(firstPageKey: AppConstants.firstPageKey);
 
-  Future<void> _loadData() async {
+  Future<void> _fetchPage(int page) async {
     List<Movie> movies = await MovieRepository(movieService: MovieService())
-        .getMovies(widget.endpoint, 1);
-
-    setState(() {
-      _movies = movies;
-    });
+        .getMovies(widget.endpoint, page);
+    final bool isLastPage = movies.length < AppConstants.pageSize;
+    if (isLastPage) {
+      _pagingController.appendLastPage(movies);
+    } else {
+      _pagingController.appendPage(movies, page + 1);
+    }
   }
 
   @override
   void initState() {
-    _loadData();
+    _pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return PagedListView<int, Movie>(
+      pagingController: _pagingController,
       scrollDirection: Axis.horizontal,
-      itemCount: _movies.length,
-      itemBuilder: (context, index) => MovieListItem(movie: _movies[index]),
+      builderDelegate: PagedChildBuilderDelegate(
+        itemBuilder: (context, item, index) => GestureDetector(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MovieDetailPage(movie: item),
+                ));
+          },
+          child: MovieListItem(movie: item),
+        ),
+      ),
     );
   }
 }

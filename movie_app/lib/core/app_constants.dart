@@ -11,5 +11,8 @@ class AppConstants {
   static const String pageQuery = '&page=';
 
   static const String imageUrl = 'https://image.tmdb.org/t/p/w500';
+
+  static const int pageSize = 20;
+  static const int firstPageKey = 1;
   
 }

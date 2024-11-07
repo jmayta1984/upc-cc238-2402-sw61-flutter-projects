@@ -7,13 +7,13 @@ class MoviesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      children: [
-        MoviesSection(endpoint: MovieEndpoint.nowPlayin,),
-       MoviesSection(endpoint: MovieEndpoint.popular,),
-        MoviesSection(endpoint: MovieEndpoint.topRated,),
-        MoviesSection(endpoint: MovieEndpoint.upcoming,),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: List.generate(
+          MovieEndpoint.values.length,
+          (index) => MoviesSection(endpoint: MovieEndpoint.values[index]),
+        ),
+      ),
     );
   }
 }
