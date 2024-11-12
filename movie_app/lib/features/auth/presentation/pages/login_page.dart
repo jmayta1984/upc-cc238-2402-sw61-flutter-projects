@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_app/features/auth/presentation/blocs/login_bloc.dart';
-import 'package:movie_app/features/auth/presentation/blocs/login_event.dart';
-import 'package:movie_app/features/auth/presentation/blocs/login_state.dart';
+import 'package:movie_app/features/auth/presentation/bloc/hiden_password_cubit.dart';
+import 'package:movie_app/features/auth/presentation/bloc/login_bloc.dart';
+import 'package:movie_app/features/auth/presentation/bloc/login_event.dart';
+import 'package:movie_app/features/auth/presentation/bloc/login_state.dart';
 import 'package:movie_app/shared/presentation/home_page.dart';
 
 class LoginPage extends StatelessWidget {
@@ -19,7 +20,8 @@ class LoginPage extends StatelessWidget {
             if (state is LoginSucess) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Wellcome ${state.user.firstName} ${state.user.lastName}'),
+                  content: Text(
+                      'Wellcome ${state.user.firstName} ${state.user.lastName}'),
                 ),
               );
               Navigator.pushReplacement(
@@ -33,8 +35,7 @@ class LoginPage extends StatelessWidget {
                   content: Text(state.message),
                 ),
               );
-            } 
-            
+            }
           },
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -51,14 +52,26 @@ class LoginPage extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  controller: _passwordControler,
-                  decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.person),
-                      suffixIcon: IconButton(
-                          onPressed: () {}, icon: const Icon(Icons.visibility)),
-                      border: const OutlineInputBorder(),
-                      label: const Text('Password')),
+                child: BlocBuilder<HidenPasswordCubit, bool>(
+                  builder: (context, state) {
+                    return TextField(
+                      obscureText: state,
+                      controller: _passwordControler,
+                      decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.person),
+                          suffixIcon: IconButton(
+                              onPressed: () {
+                                context
+                                    .read<HidenPasswordCubit>()
+                                    .toggleVisibility();
+                              },
+                              icon: Icon(state
+                                  ? Icons.visibility_off
+                                  : Icons.visibility)),
+                          border: const OutlineInputBorder(),
+                          label: const Text('Password')),
+                    );
+                  },
                 ),
               ),
               Padding(
