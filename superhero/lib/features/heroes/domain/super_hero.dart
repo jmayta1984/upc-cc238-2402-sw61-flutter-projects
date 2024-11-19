@@ -12,5 +12,24 @@ class SuperHero {
     required this.intelligence,
     required this.image,
   });
-  
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'gender': gender,
+      'intelligence': intelligence,
+      'image': image
+    };
+  }
+
+  factory SuperHero.fromMap(Map<String, dynamic> map) {
+    return SuperHero(
+      id: map['id'],
+      name: map['name'],
+      gender: map['gender'],
+      intelligence: map['intelligence'],
+      image: map['image'],
+    );
+  }
 }

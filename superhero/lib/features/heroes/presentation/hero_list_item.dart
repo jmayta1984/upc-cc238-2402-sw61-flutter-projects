@@ -10,13 +10,33 @@ class HeroListItem extends StatelessWidget {
     return Card(
       child: Row(
         children: [
-          Image.network(
-            hero.image,
-            width: 90,
-            height: 90,
-            fit: BoxFit.cover,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.network(
+              hero.image,
+              width: 90,
+              height: 90,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => const SizedBox(
+                width: 90,
+                height: 90,
+                child: Icon(Icons.person),
+              ),
+            ),
           ),
-          Text(hero.name)
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  hero.name,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(hero.gender)
+              ],
+            ),
+          )
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:superhero/features/heroes/presentation/favorite_list_page.dart';
 import 'package:superhero/features/heroes/presentation/search_heroes_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,7 +14,7 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _pages = const [
     SearchHeroesPage(),
-    Placeholder(),
+    FavoriteListPage(),
   ];
 
   final List<BottomNavigationBarItem> _items = const [

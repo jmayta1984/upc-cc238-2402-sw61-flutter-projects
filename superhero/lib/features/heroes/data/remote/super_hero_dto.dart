@@ -36,12 +36,11 @@ class SuperHeroDto {
 
   SuperHero toDomain() {
     return SuperHero(
-      id: id,
-      name: name,
-      intelligence: powerstats.intelligence,
-      image: image.url,
-      gender: appearance.gender
-    );
+        id: id,
+        name: name,
+        intelligence: powerstats.intelligence,
+        image: image.url,
+        gender: appearance.gender);
   }
 }
 
@@ -64,7 +63,7 @@ class PowerStats {
 
   factory PowerStats.fromJson(Map<String, dynamic> json) {
     return PowerStats(
-      intelligence: json['intelligence'] ?? '0',
+      intelligence: (json['intelligence'] == 'null') ? '0' : json['intelligence'],
       strength: json['strength'] ?? '0',
       speed: json['speed'] ?? '0',
       durability: json['durability'] ?? '0',

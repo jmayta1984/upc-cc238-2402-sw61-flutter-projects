@@ -6,9 +6,9 @@ import 'package:superhero/features/heroes/domain/super_hero.dart';
 import 'package:http/http.dart' as http;
 
 class SuperHeroService {
-  Future<List<SuperHero>> getSuperHeroes() async {
-    const String url =
-        'https://www.superheroapi.com/api.php/10157703717092094/search/batman';
+  Future<List<SuperHero>> getSuperHeroes(String query) async {
+    String url =
+        'https://www.superheroapi.com/api.php/10157703717092094/search/$query';
 
     try {
       http.Response response = await http.get(Uri.parse(url));

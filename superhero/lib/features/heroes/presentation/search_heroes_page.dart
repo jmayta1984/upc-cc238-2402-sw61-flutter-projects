@@ -13,20 +13,23 @@ class SearchHeroesPage extends StatefulWidget {
 class _SearchHeroesPageState extends State<SearchHeroesPage> {
   List<SuperHero> _heroes = [];
 
-
   Future<void> _loadData(String value) async {
-    List<SuperHero> heroes =  await SuperHeroService().getSuperHeroes();
+    List<SuperHero> heroes = await SuperHeroService().getSuperHeroes( value);
     setState(() {
       _heroes = heroes;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TextField(onSubmitted: (value) {
-          _loadData(value);
-        },),
+        TextField(
+          decoration: const InputDecoration(border: OutlineInputBorder()),
+          onSubmitted: (value) {
+            _loadData(value);
+          },
+        ),
         Expanded(child: HeroList(heroes: _heroes))
       ],
     );
