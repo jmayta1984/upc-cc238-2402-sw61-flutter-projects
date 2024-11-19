@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:movie_app/core/app_constants.dart';
-import 'package:movie_app/core/movie_endpoint.dart';
 import 'package:movie_app/features/movies/domain/movie.dart';
-import 'package:movie_app/features/movies/presentation/blocs/movie_bloc.dart';
-import 'package:movie_app/features/movies/presentation/blocs/movie_event.dart';
-import 'package:movie_app/features/movies/presentation/blocs/movie_state.dart';
+import 'package:movie_app/features/movies/presentation/bloc/favorite_cubit.dart';
+import 'package:movie_app/features/movies/presentation/bloc/movie_bloc.dart';
+import 'package:movie_app/features/movies/presentation/bloc/movie_event.dart';
+import 'package:movie_app/features/movies/presentation/bloc/movie_state.dart';
 import 'package:movie_app/features/movies/presentation/pages/movie_detail_page.dart';
 import 'package:movie_app/features/movies/presentation/widgets/movie_list_item.dart';
 
 class MovieList extends StatefulWidget {
   const MovieList({super.key, required this.endpoint});
-  final MovieEndpoint endpoint;
+  final String endpoint;
   @override
   State<MovieList> createState() => _MovieListState();
 }
@@ -21,14 +21,13 @@ class _MovieListState extends State<MovieList> {
   final PagingController<int, Movie> _pagingController =
       PagingController(firstPageKey: AppConstants.firstPageKey);
 
- 
   @override
   void initState() {
     super.initState();
     _pagingController.addPageRequestListener((pageKey) {
-      context
-          .read<MovieBloc>()
-          .add(GetMoviesEvent(endpoint: widget.endpoint, page: pageKey));
+      
+      context.read<MovieBloc>().add(
+          GetMoviesEvent(endpoint: widget.endpoint, page: pageKey));
     });
   }
 
@@ -42,7 +41,7 @@ class _MovieListState extends State<MovieList> {
   Widget build(BuildContext context) {
     return BlocListener<MovieBloc, MovieState>(
       listener: (context, state) {
-         if (state is MovieLoaded) {
+        if (state is MovieLoaded) {
           if (state.hasReachedEnd) {
             _pagingController.appendLastPage(state.movies);
           } else {
@@ -62,7 +61,9 @@ class _MovieListState extends State<MovieList> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MovieDetailPage(movie: item),
+                    builder: (context) => BlocProvider<FavoriteCubit>(
+                        create: (context) => FavoriteCubit(),
+                        child: MovieDetailPage(movie: item)),
                   ));
             },
             child: MovieListItem(movie: item),
@@ -71,6 +72,4 @@ class _MovieListState extends State<MovieList> {
       ),
     );
   }
-
-
 }

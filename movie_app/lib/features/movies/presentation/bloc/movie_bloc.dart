@@ -3,8 +3,8 @@ import 'package:movie_app/core/app_constants.dart';
 import 'package:movie_app/core/resource.dart';
 import 'package:movie_app/features/movies/data/repository/movie_repository.dart';
 import 'package:movie_app/features/movies/domain/movie.dart';
-import 'package:movie_app/features/movies/presentation/blocs/movie_event.dart';
-import 'package:movie_app/features/movies/presentation/blocs/movie_state.dart';
+import 'package:movie_app/features/movies/presentation/bloc/movie_event.dart';
+import 'package:movie_app/features/movies/presentation/bloc/movie_state.dart';
 
 class MovieBloc extends Bloc<MovieEvent, MovieState> {
   MovieBloc() : super(MovieInitial()) {

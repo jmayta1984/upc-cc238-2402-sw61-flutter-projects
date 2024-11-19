@@ -2,6 +2,10 @@ class AppConstants {
   static const String baseUrl = 'https://api.themoviedb.org/3';
   static const String movieEndpoint = '/movie';
 
+  static const String recommendations = '/recommendations';
+    static const String similar = '/similar';
+
+
   static const String nowPlaying = '/now_playing';
   static const String topRated = '/top_rated';
   static const String upcoming = '/upcoming';

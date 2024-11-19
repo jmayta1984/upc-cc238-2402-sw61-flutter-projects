@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/features/auth/presentation/bloc/hiden_password_cubit.dart';
 import 'package:movie_app/features/auth/presentation/bloc/login_bloc.dart';
 import 'package:movie_app/features/auth/presentation/pages/login_page.dart';
-import 'package:movie_app/features/movies/presentation/blocs/movie_bloc.dart';
 
 void main() {
   runApp(const MainApp());
