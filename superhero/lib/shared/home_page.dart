@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:superhero/features/heroes/presentation/search_heroes_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,7 +12,7 @@ class _HomePageState extends State<HomePage> {
   int _index = 0;
 
   final List<Widget> _pages = const [
-    Placeholder(),
+    SearchHeroesPage(),
     Placeholder(),
   ];
 
